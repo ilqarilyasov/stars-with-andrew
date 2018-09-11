@@ -10,6 +10,10 @@ import Foundation
 
 class StarController {
     
+    init() {
+        loadFromPersistenceStore()
+    }
+    
     // MARK: - Properties
     
     private(set) var stars = [Star]()
