@@ -24,7 +24,15 @@ class StarController {
     // MARK: - Persistance
     
     func saveToPersistenceStore() {
+        guard let url = persistenceFileURL else { return }
         
+        do {
+            let encoder = PropertyListEncoder()
+            let data = try encoder.encode(stars)
+            try data.write(to: url)
+        } catch {
+            NSLog("Error saving stars data: \(error)")
+        }
     }
     
     func loadFromPersistenceStore() {
@@ -34,6 +42,6 @@ class StarController {
     private var persistenceFileURL: URL? {
         let fm = FileManager.default
         guard let documentsDir = fm.urls(for: .documentDirectory, in: .userDomainMask).first else { return nil }
-        return 
+        return documentsDir.appendingPathComponent("stars.plist")
     }
 }
