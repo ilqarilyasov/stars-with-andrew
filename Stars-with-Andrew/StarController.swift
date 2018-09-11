@@ -36,7 +36,16 @@ class StarController {
     }
     
     func loadFromPersistenceStore() {
+        let fm = FileManager.default
+        guard let url = persistenceFileURL,fm.fileExists(atPath: url.path) else { return }
         
+        do {
+            let data = try Data(contentsOf: url)
+            let decoder = PropertyListDecoder()
+            stars = try decoder.decode([Star].self, from: data)
+        } catch {
+            NSLog("Error saving stars data: \(error)")
+        }
     }
     
     private var persistenceFileURL: URL? {
